@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Main + renderer",
+      "configurations": ["Main", "Renderer"],
+      "stopAll": true
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Renderer",
+      "port": 9222,
+      "request": "attach", // Renderer 用来调试渲染器进程.我们要把它 “绑定” 到主进程上 ()"request": "attach"
+      "type": "pwa-chrome", //渲染器是 web 进程，因此要选择 pwa-chrome 调试器
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Main",
+      "type": "pwa-node", // pwa- 这个前缀用来告诉 VS Code，使用最新的 JavaScript 调试器
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args": [".", "--remote-debugging-port=9222"],
+      "outputCapture": "std",
+      "console": "integratedTerminal"
+    }
+  ]
+}
